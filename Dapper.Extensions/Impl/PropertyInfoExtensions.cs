@@ -34,7 +34,7 @@ namespace Dapper
             var attribute = property.GetAttribute<ReadOnlyAttribute>();
 
             return (attribute != null) ? attribute.IsReadOnly : false;
-        }
+        } 
 
         public static bool IsKey(this PropertyInfo property)
         {
