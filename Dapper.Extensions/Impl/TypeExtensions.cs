@@ -61,17 +61,19 @@ namespace Dapper
             return type.GetProperties().Where(predicate);
         }
 
-        public static IEnumerable<PropertyInfo> GetEditableProperties(this Type type)
+        public static IEnumerable<PropertyInfo> GetEditableProperties(this Type type, bool includeKeyProperty = false)
         {
-            var properties = type.GetPropertiesWithAttribute<EditableAttribute>();
+            //var properties = type.GetPropertiesWithAttribute<EditableAttribute>();
+
+            var properties = type.GetProperties().AsEnumerable<PropertyInfo>();
+
+            properties = properties.Where(a => a.IsMapped());
 
             properties = properties.Where(a => a.IsEditable());
 
             properties = properties.Where(a => !a.IsReadOnly());
 
-            properties = properties.Where(a => !a.IsKey());
-
-            properties = properties.Where(a => a.IsMapped());
+            properties = properties.Where(a => includeKeyProperty && a.IsKey() && a.IsEditable());            
 
             return properties;
         }
