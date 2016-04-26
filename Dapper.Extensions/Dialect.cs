@@ -1,6 +1,6 @@
 ﻿namespace Dapper
 {
-    public enum Dialeto
+    public enum Dialect
     {
         MSSQL,
         Postgre,
