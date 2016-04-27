@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dapper
+﻿namespace Dapper
 {
-    static class StatementFactory
+    public static class StatementFactory
     {
-        public static string Select<TEntity>(string condition)
+        public static string Select<TEntity>(object condition)
         {
+            Kernel.SetDialect(Dialect.MSSQL);
+
             Kernel.CheckForKeyProperty<TEntity>();
 
             string selectStatementContent = Kernel.BuildSelectStatementContent<TEntity>();

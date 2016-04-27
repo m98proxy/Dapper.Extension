@@ -69,11 +69,11 @@ namespace Dapper
 
             properties = properties.Where(a => a.IsMapped());
 
-            properties = properties.Where(a => a.IsEditable());
-
             properties = properties.Where(a => !a.IsReadOnly());
 
-            properties = properties.Where(a => includeKeyProperty && a.IsKey() && a.IsEditable());            
+            properties = properties.ToList();
+
+            (properties as List<PropertyInfo>).RemoveAll(a => a.IsKey() && !a.IsEditable() && !includeKeyProperty);
 
             return properties;
         }

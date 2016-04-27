@@ -243,7 +243,7 @@ namespace Dapper
 
                     if (addedColumnCounter > 0) buffer.Append(" and ");
 
-                    buffer.AppendFormat(format, GetColumnName(property), property.Name);
+                    buffer.AppendFormat(format, GetColumnName(property), _parameterChar, property.Name);
 
                     ++addedColumnCounter;
                 }
