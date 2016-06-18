@@ -16,6 +16,6 @@
     <tags>dapper crud extension simple fast</tags>
   </metadata>
   <files>
-	<file src="Dapper.Extensions\Dapper.Extensions\bin\$configuration$\Dapper.Extensions.dll" target="lib\net45\" />
+	<file src="Dapper.Extensions\bin\$configuration$\Dapper.Extensions.dll" target="lib\net45\" />
   </files>
 </package>
