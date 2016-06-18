@@ -26,7 +26,7 @@ namespace Dapper
         {
             var expectedStatement = @"select [ID] as Code, [Serial], [NAME] as Name from [STAR_SHIP] where [NAME] = @Name";
 
-            var statement = StatementFactory.Select<StarShip>(new { Name = "Millennium Falcon" });
+            var statement = StatementFactory.Select<StarShip>(Dialect.MSSQL, new { Name = "Millennium Falcon" });
 
             Assert.AreEqual(expectedStatement, statement);
         }
@@ -36,7 +36,7 @@ namespace Dapper
         {
             var expectedStatement = @"insert into [STAR_SHIP]([Serial], [NAME]) values (@Serial, @Name)";
 
-            var statement = StatementFactory.Insert<StarShip>();
+            var statement = StatementFactory.Insert<StarShip>(Dialect.MSSQL);
 
             Assert.AreEqual(expectedStatement, statement);
         }
@@ -46,7 +46,7 @@ namespace Dapper
         {
             var expectedStatement = @"update [STAR_SHIP] set [Serial] = @Serial , [NAME] = @Name where [ID] = @Code";
 
-            var statement = StatementFactory.Update<StarShip>();
+            var statement = StatementFactory.Update<StarShip>(Dialect.MSSQL);
 
             Assert.AreEqual(expectedStatement, statement);
         }
@@ -56,7 +56,7 @@ namespace Dapper
         {
             var expectedStatement = @"delete from [STAR_SHIP] where [ID] = @Code";
 
-            var statement = StatementFactory.Delete<StarShip>();
+            var statement = StatementFactory.Delete<StarShip>(Dialect.MSSQL);
 
             Assert.AreEqual(expectedStatement, statement);
         }
