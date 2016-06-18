@@ -3,7 +3,7 @@
   <metadata>
     <id>Dapper.Extension</id>
     <version>$version$</version>
-    <title>Dapper CRUD extension methods</title>
+    <title>Dapper.Extension</title>
     <authors>m98proxy</authors>
     <owners>m98proxy</owners>
     <licenseUrl>https://github.com/m98proxy/Dapper.Extension/blob/master/LICENSE.md</licenseUrl>
@@ -15,6 +15,9 @@
     <copyright>Copyright &#x00A9; m98proxy@gmail.com, The MIT License (MIT).</copyright>
     <tags>dapper crud extension simple database db sql server</tags>
   </metadata>
+  <dependencies>
+    <dependency id="Dapper" version="1.42.0" />
+  </dependencies>
   <files>
     <file src="src\Dapper.Extension\bin\$configuration$\Dapper.Extension.dll" target="lib\net45\" />
   </files>
