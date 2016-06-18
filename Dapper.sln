@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2025E787-60D1-4FCC-8801-CC2F60E8AB74}"
 	ProjectSection(SolutionItems) = preProject
 		build.bat = build.bat
+		Dapper.Extensions.nuspec = Dapper.Extensions.nuspec
 	EndProjectSection
 EndProject
 Global
