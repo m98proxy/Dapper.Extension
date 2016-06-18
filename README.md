@@ -1,4 +1,4 @@
-# Dapper CRUD extension
+# CRUD extension methods for Dapper
 ###### Work in progress...
 ### 1. What we have for now:
 * Kernel methods for create steatements fashionably;
