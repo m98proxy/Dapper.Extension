@@ -5,4 +5,5 @@
 * Steatement builders for **INSERT, SELECT, UPDATE, DELETE**;
 * List<TEntity> command;
 * Unity Test project;
-* nuget package is ready to use: https://www.nuget.org/packages/Dapper.Extension/
+
+[![NuGet version](https://badge.fury.io/nu/Dapper.Extension.svg)](https://www.nuget.org/packages/Dapper.Extension/)
