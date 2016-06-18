@@ -77,5 +77,12 @@ namespace Dapper
 
             return properties;
         }
+
+        public static IEnumerable<PropertyInfo> GetKeyProperties(this Type type)
+        {
+            var props = type.GetPropertiesWithAttribute<KeyAttribute>();
+
+            return props.Any() ? props : null;
+        }
     }
 }

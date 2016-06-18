@@ -86,23 +86,21 @@ namespace Dapper
             return string.Format(_wrapper, input);
         }
 
-        public static IEnumerable<PropertyInfo> GetKeyProperties(Type type)
-        {
-            var props = type.GetPropertiesWithAttribute<KeyAttribute>();
-
-            return props.Any() ? props : null;
-        }
-
         public static void CheckForKeyProperty(IEnumerable<PropertyInfo> properties)
         {
             Protect.Against(!properties.Any(), "Could not find a [Key] property");
         }
 
-        public static void CheckForKeyProperty<TEntity>()
+        public static void CheckForKeyProperty(Type type)
         {
-            var propriedades = Kernel.GetKeyProperties(typeof(TEntity));
+            var propriedades = type.GetKeyProperties();
 
             CheckForKeyProperty(propriedades);
+        }
+
+        public static void CheckForKeyProperty<TEntity>()
+        {
+            CheckForKeyProperty(typeof(TEntity));
         }
 
         public static string GetTableName(Type type)
@@ -176,6 +174,26 @@ namespace Dapper
             return buffer.ToString();
         }
 
+        public static string BuildInsertStatementContent<TEntity>(bool includeKeyProperty = false)
+        {
+            var properties = typeof(TEntity).GetEditableProperties(includeKeyProperty: includeKeyProperty);
+
+            return BuildStatementContent<TEntity>(properties, (buffer, property) =>
+            {
+                buffer.Append(GetColumnName(property));
+            });
+        }
+
+        public static string BuildInsertStatementValueContent<TEntity>(bool includeKeyProperty = false)
+        {
+            var properties = typeof(TEntity).GetEditableProperties(includeKeyProperty: includeKeyProperty);
+
+            return BuildStatementContent<TEntity>(properties, (buffer, property) =>
+            {
+                buffer.AppendFormat("{0}{1}", _parameterChar, property.Name);
+            });
+        }
+
         public static string BuildSelectStatementContent<TEntity>()
         {
             var properties = typeof(TEntity).GetProperties();
@@ -195,30 +213,43 @@ namespace Dapper
         {
             var properties = typeof(TEntity).GetEditableProperties(includeKeyProperty: includeKeyProperty);
 
-            return BuildStatementContent<TEntity>(properties, (buffer, property) =>
+            var statement = BuildStatementContent<TEntity>(properties, (buffer, property) =>
             {
-                buffer.AppendFormat("{0} = {1}{2}", GetColumnName(property), _parameterChar, property.Name);
+                buffer.AppendFormat("{0} = {1}{2} ", GetColumnName(property), _parameterChar, property.Name);
             });
+
+            var where = BuildWhereKeyClause<TEntity>();
+
+            return string.Concat(statement, where);
         }
 
-        public static string BuildInsertStatementContent<TEntity>(bool includeKeyProperty = false)
+        public static string BuildWhereKeyClause<TEntity>()
         {
-            var properties = typeof(TEntity).GetEditableProperties(includeKeyProperty: includeKeyProperty);
+            var buffer = new StringBuilder();
 
-            return BuildStatementContent<TEntity>(properties, (buffer, property) =>
+            var addedColumnCounter = 0;
+
+            var keyProperties = typeof(TEntity).GetKeyProperties();
+
+            foreach (var key in keyProperties)
             {
-                buffer.Append(GetColumnName(property));
-            });
-        }
+                var format = "{0} = {1}{2}";
 
-        public static string BuildInsertStatementValueContent<TEntity>(bool includeKeyProperty = false)
-        {
-            var properties = typeof(TEntity).GetEditableProperties(includeKeyProperty: includeKeyProperty);
+                if (addedColumnCounter > 0) buffer.Append(" and ");
 
-            return BuildStatementContent<TEntity>(properties, (buffer, property) =>
+                buffer.AppendFormat(format, GetColumnName(key), _parameterChar, key.Name);
+
+                ++addedColumnCounter;
+            }
+
+            if (buffer.ToString().EndsWith(" and "))
             {
-                buffer.AppendFormat("{0}{1}", _parameterChar, property.Name);
-            });
+                buffer.Remove(buffer.Length - 5, 5);
+            }
+
+            var clause = buffer.ToString();
+
+            return (!string.IsNullOrWhiteSpace(clause)) ? string.Format("where {0}", clause) : string.Empty;
         }
 
         public static string BuildWhereClause<TEntity>(object condition)

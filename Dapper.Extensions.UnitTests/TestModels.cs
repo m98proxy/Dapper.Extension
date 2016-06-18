@@ -16,6 +16,7 @@ namespace Dapper
         [Column("NAME")]
         public string Name { get; set; }
 
+        [NotMapped]
         public string Pilot { get; set; }        
     }
 }
