@@ -17,28 +17,28 @@
             return string.Format(@"select {0} from {1} {2}", selectStatementContent, tableName, whereClause).Trim();
         }
 
-        public static string Insert<TEntity>(Dialect dialect)
+        public static string Insert<TEntity>(Dialect dialect, bool includeKeyProperty = false)
         {
             Kernel.SetDialect(dialect);
 
             Kernel.CheckForKeyProperty<TEntity>();
 
-            string insertStatementContent = Kernel.BuildInsertStatementContent<TEntity>();
+            string insertStatementContent = Kernel.BuildInsertStatementContent<TEntity>(includeKeyProperty);
 
-            string insertStatementValueContent = Kernel.BuildInsertStatementValueContent<TEntity>(false);
+            string insertStatementValueContent = Kernel.BuildInsertStatementValueContent<TEntity>(includeKeyProperty);
 
             string tableName = Kernel.GetTableName<TEntity>();
 
             return string.Format(@"insert into {0}({1}) values ({2})", tableName, insertStatementContent, insertStatementValueContent);
         }
 
-        public static string Update<TEntity>(Dialect dialect)
+        public static string Update<TEntity>(Dialect dialect, bool includeKeyProperty = false)
         {
             Kernel.SetDialect(dialect);
 
             Kernel.CheckForKeyProperty<TEntity>();
 
-            string updateStatementContent = Kernel.BuildUpdateStatementContent<TEntity>();
+            string updateStatementContent = Kernel.BuildUpdateStatementContent<TEntity>(includeKeyProperty);
 
             string tableName = Kernel.GetTableName<TEntity>();
 

@@ -42,11 +42,31 @@ namespace Dapper
         }
 
         [TestMethod]
+        public void StatementFactory_BuildInsertStatementIncludeKeyPropertyTest()
+        {
+            var expectedStatement = @"insert into [STAR_SHIP]([ID], [Serial], [NAME]) values (@Code, @Serial, @Name)";
+
+            var statement = StatementFactory.Insert<StarShip>(Dialect.MSSQL, true);
+
+            Assert.AreEqual(expectedStatement, statement);
+        }
+
+        [TestMethod]
         public void StatementFactory_BuildUpdateStatementTest()
         {
             var expectedStatement = @"update [STAR_SHIP] set [Serial] = @Serial , [NAME] = @Name where [ID] = @Code";
 
             var statement = StatementFactory.Update<StarShip>(Dialect.MSSQL);
+
+            Assert.AreEqual(expectedStatement, statement);
+        }
+
+        [TestMethod]
+        public void StatementFactory_BuildUpdateStatementIncludeKeyPropertyTest()
+        {
+            var expectedStatement = @"update [STAR_SHIP] set [ID] = @Code , [Serial] = @Serial , [NAME] = @Name where [ID] = @Code";
+
+            var statement = StatementFactory.Update<StarShip>(Dialect.MSSQL, true);
 
             Assert.AreEqual(expectedStatement, statement);
         }
